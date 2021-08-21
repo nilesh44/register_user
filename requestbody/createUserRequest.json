@@ -1,0 +1,26 @@
+{
+"userName":"ghrt",
+"password":"kil@123",
+"firstName":"sgnilkumar",
+"lastName":"skngh",
+"userPhones":[
+	{
+		"phoneNumber":"3434567654",
+		"isActive":"Y"
+	},
+	{
+		"phoneNumber":"8787878787",
+		"isActive":"N"
+	}
+	],
+"userEmails":[
+	{
+		"emailAddress":"testUser",
+		"isActive":"Y"
+	},
+	{
+		"emailAddress":"testUser@email.com",
+		"isActive":"N"
+	}
+	]
+}

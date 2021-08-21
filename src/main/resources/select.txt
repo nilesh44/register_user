@@ -1,0 +1,9 @@
+select * from INT_USER ;
+select * from user_credentials;
+select * from email_details;
+select * from phone_details;
+select * from change_ticket;
+
+show columns from email_details;
+
+select * from email_details as ed inner join  change_ticket  as ct on ed.chng_tkt_id = ct.chng_tkt_id;

@@ -1,0 +1,5 @@
+ {
+ "path":"http://localhost:8080/user/update/phone/hrt",
+    "oldPhoneNumber": "9787878787",
+    "newPhoneNumber": "7878787876"
+ }

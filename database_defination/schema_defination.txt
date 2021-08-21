@@ -1,0 +1,109 @@
+
+select * from change_ticket;
+select * from int_user;
+select * from user_cred;
+select * from email_details;
+select * from phone_details;
+select * from user_session;
+select * from user_prefer_code;
+#create schema demo;
+drop schema if exists login_mgt;
+create schema login_mgt;
+use login_mgt;
+
+
+CREATE TABLE user_prefer_code (
+     user_prefer_id  VARCHAR(05) NOT NULL ,
+     user_prefer_type char(01),
+	 user_prefer_desc VARCHAR(20),
+     crt_tms timestamp not null,
+     exp_tms timestamp,
+    constraint user_prefer_id_pk primary key(user_prefer_id)
+);
+
+insert into user_prefer_code(user_prefer_id,user_prefer_type,user_prefer_desc,crt_tms,exp_tms) values('01','P','primary',now(),null);
+insert into user_prefer_code(user_prefer_id,user_prefer_type,user_prefer_desc,crt_tms,exp_tms) values('02','S','secondary',now(),null);
+
+
+CREATE TABLE change_ticket (
+    chng_tkt_id  INTEGER NOT NULL AUTO_INCREMENT primary key,
+    crt_tms      TIMESTAMP ,
+    exp_tms      TIMESTAMP,
+    upd_tms      TIMESTAMP,
+    action_code   VARCHAR(5) ,
+    by_user      VARCHAR(50)
+);
+
+
+CREATE TABLE int_user (
+    int_user_id  INTEGER NOT NULL AUTO_INCREMENT primary key,
+     is_active char(01) default 'N',
+    chng_tkt_id  INTEGER NOT NULL unique,
+    CONSTRAINT change_ticket_int_user FOREIGN KEY (chng_tkt_id) REFERENCES change_ticket(chng_tkt_id)
+);
+
+CREATE TABLE user_cred (
+    user_cred_id  INTEGER NOT NULL AUTO_INCREMENT primary key,
+    int_user_id   INTEGER ,
+    user_name     VARCHAR(20),
+    user_password     VARCHAR(20),
+     is_active char(01) default 'N',
+    chng_tkt_id  INTEGER NOT NULL unique,
+	CONSTRAINT int_user_user_credentials FOREIGN KEY (int_user_id) REFERENCES int_user(int_user_id),
+     CONSTRAINT change_ticket_user_credentials FOREIGN KEY (chng_tkt_id) REFERENCES change_ticket(chng_tkt_id)
+
+
+);
+
+CREATE TABLE email_details (
+    email_id     INTEGER NOT NULL AUTO_INCREMENT primary key,
+    int_user_id  INTEGER NOT NULL,
+    email_addr   VARCHAR(50) NOT NULL,
+    chng_tkt_id  INTEGER NOT NULL unique ,
+    is_active char(01) default 'N',
+    user_prefer_code varchar(05) NOT NULL,
+
+     CONSTRAINT int_user_email_details FOREIGN KEY (int_user_id) REFERENCES int_user(int_user_id),
+          CONSTRAINT change_ticket_email_details FOREIGN KEY (chng_tkt_id) REFERENCES change_ticket(chng_tkt_id),
+           CONSTRAINT user_prefer_code_email_details FOREIGN KEY (user_prefer_code) REFERENCES user_prefer_code(user_prefer_id)
+);
+
+CREATE TABLE phone_details (
+    phone_id     INTEGER NOT NULL AUTO_INCREMENT primary key,
+    int_user_id  INTEGER NOT NULL,
+    phone_num    VARCHAR(10) NOT NULL,
+    ext_num      VARCHAR(5),
+     is_active char(01) default 'N',
+    chng_tkt_id  INTEGER NOT NULL unique,
+    user_prefer_code varchar(05) NOT NULL,
+
+     CONSTRAINT int_user_phone_details FOREIGN KEY (int_user_id) REFERENCES int_user(int_user_id),
+	 CONSTRAINT change_ticket_phone_details FOREIGN KEY (chng_tkt_id) REFERENCES change_ticket(chng_tkt_id),
+	 CONSTRAINT user_prefer_code_phone_details FOREIGN KEY (user_prefer_code) REFERENCES user_prefer_code(user_prefer_id)
+);
+
+CREATE TABLE personal_info (
+   personal_info_id   INTEGER NOT NULL AUTO_INCREMENT primary key,
+    int_user_id       INTEGER NOT NULL,
+    first_name        VARCHAR(50),
+    last_name         VARCHAR(50),
+     is_active char(01) default 'N',
+    chng_tkt_id       INTEGER NOT NULL unique,
+
+     CONSTRAINT int_user_personal_info FOREIGN KEY (int_user_id) REFERENCES int_user(int_user_id),
+       CONSTRAINT change_ticket_personal_info FOREIGN KEY (chng_tkt_id) REFERENCES change_ticket(chng_tkt_id)
+);
+
+CREATE TABLE user_session (
+     user_session_id  INTEGER NOT NULL AUTO_INCREMENT ,
+     int_user_id   INTEGER not null ,
+     user_name VARCHAR(20),
+     crt_tms timestamp not null,
+     last_login_tms timestamp not null,
+	 is_expired char(01) default 'N',
+	CONSTRAINT int_user_user_session FOREIGN KEY (int_user_id) REFERENCES int_user(int_user_id),
+    constraint USER_session_pk primary key(user_session_id,crt_tms)
+);
+
+
+commit ;
