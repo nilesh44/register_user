@@ -40,8 +40,10 @@ public class EmailController {
 
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Fetch email details successfully",
-                    content = { @Content(mediaType = "application/json",
-                            schema = @Schema(implementation = GetEmailResponse.class)) })
+                    content = { @Content(
+                    		mediaType = "application/json",
+                            schema = @Schema(
+                            		implementation = GetEmailResponse.class)) })
     })
 
     @GetMapping(value = "user/fetch/email")
