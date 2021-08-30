@@ -2,21 +2,19 @@ package com.ace.registeruser.service;
 
 import java.util.List;
 
-import com.ace.registeruser.entity.UserSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Isolation;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.ace.registeruser.entity.EmailDetails;
 import com.ace.registeruser.entity.PhoneDetails;
+import com.ace.registeruser.entity.UserSession;
 import com.ace.registeruser.repository.EmailRepositiry;
 import com.ace.registeruser.repository.PhoneRepository;
 import com.ace.registeruser.vo.create.UserEmail;
 import com.ace.registeruser.vo.create.UserPhone;
-import com.ace.registeruser.vo.get.GetEmailResponse;
 import com.ace.registeruser.vo.get.GetUserCompletInfoResponse;
-import com.ace.registeruser.vo.get.GetUserPhoneResponse;
-import org.springframework.transaction.annotation.Isolation;
-import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @Transactional(isolation = Isolation.READ_COMMITTED)

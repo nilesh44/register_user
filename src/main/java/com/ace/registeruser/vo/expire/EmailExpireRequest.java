@@ -3,8 +3,6 @@ package com.ace.registeruser.vo.expire;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotEmpty;
 
-import com.ace.registeruser.validation.IsEmailExistInDB;
-
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
