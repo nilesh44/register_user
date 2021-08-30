@@ -1,7 +1,16 @@
 package com.ace.registeruser.controller;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestAttribute;
+import org.springframework.web.bind.annotation.RestController;
+
 import com.ace.registeruser.entity.UserSession;
-import com.ace.registeruser.vo.expire.EmailExpireResponse;
+import com.ace.registeruser.service.FetchUserDetailsService;
+import com.ace.registeruser.vo.get.GetUserCompletInfoResponse;
+
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.enums.ParameterIn;
@@ -9,15 +18,6 @@ import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
-
-import com.ace.registeruser.service.FetchUserDetailsService;
-import com.ace.registeruser.vo.get.GetEmailResponse;
-import com.ace.registeruser.vo.get.GetUserCompletInfoResponse;
-import com.ace.registeruser.vo.get.GetUserPhoneResponse;
 
 @RestController
 //@CrossOrigin(origins="http://localhost:4200")
@@ -32,6 +32,7 @@ public class FetchUserDetailsController {
 							name = "userName",
 							description = "user Name",
 							required = true,
+							example = "sunil",
 							schema = @Schema(type = "string"))})
 	@ApiResponses(value = {
 			@ApiResponse(responseCode = "200", description = " Fetch complete user details successfully",

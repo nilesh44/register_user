@@ -4,6 +4,8 @@ plugins {
 	id 'java'
     id "org.sonarqube" version "3.3"
     id 'jacoco'
+    id 'eclipse'
+    
 }
 
 group = 'com.example'
@@ -23,7 +25,7 @@ repositories {
 }
 
 dependencies {
-    // https://mvnrepository.com/artifact/org.apache.poi/poi
+    
     implementation group: 'org.apache.poi', name: 'poi', version: '5.0.0'
     implementation group: 'org.apache.poi', name: 'poi-ooxml', version: '5.0.0'
 

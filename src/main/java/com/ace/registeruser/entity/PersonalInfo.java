@@ -7,9 +7,8 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
-import com.ace.registeruser.vo.create.RegisterUserRequest;
-
 import com.ace.registeruser.vo.create.UserPersonalInfo;
+
 import lombok.Builder;
 import lombok.Data;
 
