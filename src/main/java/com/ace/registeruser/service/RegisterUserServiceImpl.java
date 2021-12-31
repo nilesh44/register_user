@@ -10,7 +10,7 @@ import com.ace.registeruser.entity.ChangeTicket;
 import com.ace.registeruser.entity.EmailDetails;
 import com.ace.registeruser.entity.InternalUser;
 import com.ace.registeruser.entity.PersonalInfo;
-import com.ace.registeruser.entity.PhoneDetails;
+import com.ace.registeruser.entity.MobileDetails;
 import com.ace.registeruser.entity.UserCredentials;
 import com.ace.registeruser.repository.EmailRepositiry;
 import com.ace.registeruser.repository.InternalUserRepository;
@@ -89,7 +89,7 @@ public class RegisterUserServiceImpl implements RegisterUserService {
 		CompletableFuture<Void> createPhoneFuture=CompletableFuture.runAsync(() -> {
 			ChangeTicket changeTicketforCreatePhone = changeTicketService
 					.getChangeTicketForCreate(userName);
-			PhoneDetails phoneDetails = PhoneDetails.createPhone(changeTicketforCreatePhone.getChangeTicketId(),
+			MobileDetails phoneDetails = MobileDetails.createPhone(changeTicketforCreatePhone.getChangeTicketId(),
 					internalUserId, userPhone.getPhoneNumber(),"01");
 			phoneRepository.saveAndFlush(phoneDetails);
 		});

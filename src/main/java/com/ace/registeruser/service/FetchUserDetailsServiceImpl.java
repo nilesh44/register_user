@@ -8,7 +8,7 @@ import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.ace.registeruser.entity.EmailDetails;
-import com.ace.registeruser.entity.PhoneDetails;
+import com.ace.registeruser.entity.MobileDetails;
 import com.ace.registeruser.entity.UserSession;
 import com.ace.registeruser.repository.EmailRepositiry;
 import com.ace.registeruser.repository.PhoneRepository;
@@ -37,7 +37,7 @@ public class FetchUserDetailsServiceImpl implements FetchUserDetailsService {
 
 		List<UserEmail> userEmails = UserEmail.from(emailDetails);
 
-		List<PhoneDetails> phoneDetails = phoneRepository.findByInternalUserId(internalUserId);
+		List<MobileDetails> phoneDetails = phoneRepository.findByInternalUserId(internalUserId);
 
 		List<UserPhone> userPhones = UserPhone.from(phoneDetails);
 

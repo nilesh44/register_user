@@ -1,6 +1,5 @@
 package com.ace.registeruser.entity;
 
-import java.sql.Date;
 import java.sql.Timestamp;
 
 import javax.persistence.Column;
@@ -8,31 +7,29 @@ import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
 import javax.persistence.Table;
 
-import com.ace.registeruser.vo.create.UserPersonalInfo;
-
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
-
+import lombok.NoArgsConstructor;
 @Data
 @Builder
 @Entity
-@Table(name="personal_info")
-public class PersonalInfo {
+@Table(name="mobile_details")
+@NoArgsConstructor
+@AllArgsConstructor
+public class MobileDetails {
 	
 	@EmbeddedId
-	private PersonalInfoPk personalInfoPk;
+	private MobileDetailsPk mobileDetailsPk;
 	
 	@Column(name = "int_user_id")
 	private Integer internalUserId;
 	
-	@Column(name = "first_name")
-	private String firstName;
+	@Column(name = "mob_num")
+	private String mobileNumber;
 	
-	@Column(name = "last_name")
-	private String lastName;
-	
-	@Column(name = "dob")
-	private Date dateOfBirth;
+	@Column(name = "cntry_code")
+	private String countryCode;
 	
 	@Column(name="is_block")
 	private String isBlock;
@@ -46,13 +43,14 @@ public class PersonalInfo {
 	@Column(name="by_user")
 	private String byUser;
 	
-	public static PersonalInfo createPersonalInfo(Integer changeTicketId, Integer internalUserId,
-			UserPersonalInfo userPersonalInfo) {
-		return PersonalInfo
+	public static MobileDetails createPhone(Integer changeTicketId, Integer internalUserId,
+			String phoneNumber,String userPreferenceCode) {
+		return MobileDetails
 				.builder()
 				.internalUserId(internalUserId)
-				.firstName(userPersonalInfo.getFirstName())
-				.lastName(userPersonalInfo.getLastName())
+				.mobileNumber(phoneNumber)
+				.userPreferenceCode(userPreferenceCode)
 				.build();
 	}
+
 }

@@ -1,7 +1,7 @@
 package com.ace.registeruser.service;
 
 import com.ace.registeruser.entity.ChangeTicket;
-import com.ace.registeruser.entity.PhoneDetails;
+import com.ace.registeruser.entity.MobileDetails;
 import com.ace.registeruser.entity.UserSession;
 import com.ace.registeruser.exception.RecordAlradyPresent;
 import com.ace.registeruser.repository.PhoneRepository;
@@ -37,7 +37,7 @@ public class PhoneServiceImpl implements PhoneService{
         Integer internalUserId = userSession.getInternalUserId();
         String userName=userSession.getUserName();
 
-        PhoneDetails existingSecondaryPhone= phoneRepository.findByInternalUserIdAndUserPreferenceCode(internalUserId,"02");
+        MobileDetails existingSecondaryPhone= phoneRepository.findByInternalUserIdAndUserPreferenceCode(internalUserId,"02");
 
         if(existingSecondaryPhone!=null){
             expirePhone( existingSecondaryPhone, userName);
@@ -47,7 +47,7 @@ public class PhoneServiceImpl implements PhoneService{
 
             String userPreferenceCode = "02";
 
-            PhoneDetails phoneDetailsUpdated = PhoneDetails
+            MobileDetails phoneDetailsUpdated = MobileDetails
                     .createPhone(
                             changeTicket.getChangeTicketId(),
                             internalUserId,
@@ -64,23 +64,23 @@ public class PhoneServiceImpl implements PhoneService{
         Integer internalUserId = userSession.getInternalUserId();
         String newPrimaryPhoneNumber=changePrimaryPhoneNumber.getNewPrimaryPhoneNumber();
         String userName=userSession.getUserName();
-        PhoneDetails newPrimaryPhoneDetails = phoneRepository.findByPhoneNumber(newPrimaryPhoneNumber);
+        MobileDetails newPrimaryPhoneDetails = phoneRepository.findByPhoneNumber(newPrimaryPhoneNumber);
 
         if(isPhoneNumberAssociatedWithAnotherUSer(newPrimaryPhoneDetails,internalUserId)){
             log.error("phone number is associated to another user");
             throw new RecordAlradyPresent("invalid phone number");
         }
 
-      List<PhoneDetails> existingPhoneDetails= phoneRepository.findByInternalUserId(internalUserId);
+      List<MobileDetails> existingPhoneDetails= phoneRepository.findByInternalUserId(internalUserId);
 
         if(!CollectionUtils.isEmpty(existingPhoneDetails)){
 
-            Optional<PhoneDetails> isPrimaryPhoneNumber=  existingPhoneDetails.stream().filter(existingPhoneDetail->existingPhoneDetail.getUserPreferenceCode().equals("01")).findFirst();
-            Optional<PhoneDetails> isSecondaryPhoneNumber=  existingPhoneDetails.stream().filter(existingPhoneDetail->existingPhoneDetail.getUserPreferenceCode().equals("02")).findFirst();
+            Optional<MobileDetails> isPrimaryPhoneNumber=  existingPhoneDetails.stream().filter(existingPhoneDetail->existingPhoneDetail.getUserPreferenceCode().equals("01")).findFirst();
+            Optional<MobileDetails> isSecondaryPhoneNumber=  existingPhoneDetails.stream().filter(existingPhoneDetail->existingPhoneDetail.getUserPreferenceCode().equals("02")).findFirst();
 
             if(isPrimaryPhoneNumber.isPresent()){
 
-                PhoneDetails existingPrimaryPhone=isPrimaryPhoneNumber.get();
+                MobileDetails existingPrimaryPhone=isPrimaryPhoneNumber.get();
 
                 if(isPhoneNumberAlradyPrimary(existingPrimaryPhone,newPrimaryPhoneNumber)){
                     throw new RecordAlradyPresent("this phone number is already existing primary phone number");
@@ -109,14 +109,14 @@ public class PhoneServiceImpl implements PhoneService{
         }
 
 
-private boolean isUserExistingSecondaryPhoneNumber( PhoneDetails newPrimaryPhoneDetails ,Integer internalUserId){
+private boolean isUserExistingSecondaryPhoneNumber( MobileDetails newPrimaryPhoneDetails ,Integer internalUserId){
   return  newPrimaryPhoneDetails.getInternalUserId().equals(internalUserId)
             &&newPrimaryPhoneDetails.getUserPreferenceCode().equals("02");
 }
 
 
 
-    private void makePrimaryAsSecondary(PhoneDetails phoneDetail,String userName,Integer internalUserId){
+    private void makePrimaryAsSecondary(MobileDetails phoneDetail,String userName,Integer internalUserId){
         expirePhone( phoneDetail, userName);
 
         ChangeTicket changeTicketforUpdate = changeTicketService.getChangeTicketForUpdate(userName);
@@ -124,13 +124,13 @@ private boolean isUserExistingSecondaryPhoneNumber( PhoneDetails newPrimaryPhone
     }
 
     private void createUpdateNewPhone(Integer changeTicketId, Integer internalUserId, String phoneNumber,String userPreferenceCode) {
-        PhoneDetails phoneDetailsUpdated = PhoneDetails
+        MobileDetails phoneDetailsUpdated = MobileDetails
                 .createPhone(changeTicketId,
                         internalUserId, phoneNumber,userPreferenceCode);
         phoneRepository.save(phoneDetailsUpdated);
     }
 
-    private void expirePhone(PhoneDetails phoneDetail,String userName) {
+    private void expirePhone(MobileDetails phoneDetail,String userName) {
 
         ChangeTicket changeTicketforExpire = changeTicketService.getChangeTicketForExpire(userName);
         phoneDetail.setIsPhoneActive("N");
@@ -139,11 +139,11 @@ private boolean isUserExistingSecondaryPhoneNumber( PhoneDetails newPrimaryPhone
     }
 
 
-    private boolean isPhoneNumberAssociatedWithAnotherUSer(PhoneDetails phoneDetails, Integer internalUserId){
+    private boolean isPhoneNumberAssociatedWithAnotherUSer(MobileDetails phoneDetails, Integer internalUserId){
         return phoneDetails!=null && !phoneDetails.getInternalUserId().equals(internalUserId);
     }
 
-    private boolean isPhoneNumberAlradyPrimary(PhoneDetails primaryPhoneDetail,String newPrimaryPhoneNumber){
+    private boolean isPhoneNumberAlradyPrimary(MobileDetails primaryPhoneDetail,String newPrimaryPhoneNumber){
         return primaryPhoneDetail.getPhoneNumber().equals(newPrimaryPhoneNumber);
     }
 
@@ -151,11 +151,11 @@ private boolean isUserExistingSecondaryPhoneNumber( PhoneDetails newPrimaryPhone
     public void expirePhone(PhoneExpireRequest expirePhone, UserSession userSession) {
 
         // get oldPhone details
-        List<PhoneDetails> phoneDetails = phoneRepository
+        List<MobileDetails> phoneDetails = phoneRepository
                 .getUserPhone(Integer.valueOf(userSession.getInternalUserId()), expirePhone.getPhoneNumber());
         PhoneRepository.sendErrorForPhoneNotFound(phoneDetails);
 
-        PhoneDetails phoneDetail = phoneDetails.get(0);
+        MobileDetails phoneDetail = phoneDetails.get(0);
         // expire oldphone details
         // create change ticket for expire record
         ChangeTicket changeTicketforExpire = changeTicketService.getChangeTicketForExpire(userSession.getUserName());
@@ -169,7 +169,7 @@ private boolean isUserExistingSecondaryPhoneNumber( PhoneDetails newPrimaryPhone
     @Override
     public GetUserPhoneResponse getPhone(String userName, UserSession userSession) {
 
-        List<PhoneDetails> phoneDetails = phoneRepository
+        List<MobileDetails> phoneDetails = phoneRepository
                 .findByInternalUserId(userSession.getInternalUserId());
         GetUserPhoneResponse getUserPhoneResponse = new GetUserPhoneResponse();
 

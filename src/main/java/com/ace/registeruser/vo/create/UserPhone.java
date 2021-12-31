@@ -7,7 +7,7 @@ import javax.validation.constraints.Digits;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.Size;
 
-import com.ace.registeruser.entity.PhoneDetails;
+import com.ace.registeruser.entity.MobileDetails;
 import com.ace.registeruser.validation.PhoneAlradyPresentInDB;
 
 import lombok.AllArgsConstructor;
@@ -30,7 +30,7 @@ public class UserPhone {
 
 	private String userPreference;
 
-	public static List<UserPhone> from(List<PhoneDetails> phoneDetails) {
+	public static List<UserPhone> from(List<MobileDetails> phoneDetails) {
 		return phoneDetails
 				.stream()
 				.map(phone -> populateUserPhone( phone))
@@ -48,7 +48,7 @@ public class UserPhone {
 	return"unknown";
 }
 
-private static UserPhone populateUserPhone(PhoneDetails phone){
+private static UserPhone populateUserPhone(MobileDetails phone){
 
 	return UserPhone
 			.builder()

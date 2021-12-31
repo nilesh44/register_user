@@ -1,10 +1,10 @@
 package com.ace.registeruser.entity;
 
+import java.sql.Timestamp;
+
 import javax.persistence.Column;
+import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
 import javax.persistence.Table;
 
 import lombok.AllArgsConstructor;
@@ -22,30 +22,21 @@ import lombok.NoArgsConstructor;
 @Data
 public class InternalUser {
 	
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name="int_user_id") 
-	private Integer internalUsrId;
+	@EmbeddedId
+	private InternalUserPk internalUserPk;
+
+	@Column(name="is_block")
+	private String isBlock;
 	
-	@Column(name="chng_tkt_id") 
-	private Integer changeTicketId;
+	@Column(name="exp_tms")
+	private Timestamp expireTms;
 	
-	@Column(name="is_active")
-	private String isInternalUserActive;
-	
-	/*
-	 * @ToString.Exclude
-	 * 
-	 * @OneToOne(fetch = FetchType.EAGER, optional = false,cascade=CascadeType.ALL)
-	 * 
-	 * @JoinColumn(name = "chng_tkt_id", nullable =
-	 * false,insertable=false,updatable=false) private CreateUserEntity
-	 * createUserEntity;
-	 */
+	@Column(name="by_user")
+	private String byUser;
 	
 	
 	public static InternalUser createInternalUser(Integer changeTicketId) {
-		return InternalUser.builder().changeTicketId(changeTicketId).isInternalUserActive("Y").build();
+		return InternalUser.builder().build();
 	}
 
 

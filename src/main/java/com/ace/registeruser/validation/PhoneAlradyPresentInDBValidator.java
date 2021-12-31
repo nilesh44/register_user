@@ -9,7 +9,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Example;
 
-import com.ace.registeruser.entity.PhoneDetails;
+import com.ace.registeruser.entity.MobileDetails;
 import com.ace.registeruser.repository.PhoneRepository;
 
 public class PhoneAlradyPresentInDBValidator implements ConstraintValidator<PhoneAlradyPresentInDB, String> {
@@ -28,10 +28,10 @@ public class PhoneAlradyPresentInDBValidator implements ConstraintValidator<Phon
 		if(StringUtils.isBlank(phone) ) {
 	return false;
 }
-		Example<PhoneDetails> example = Example.of(PhoneDetails.builder().phoneNumber(phone)
+		Example<MobileDetails> example = Example.of(MobileDetails.builder().phoneNumber(phone)
 			    .isPhoneActive("Y")
 				.build());
-		Optional<PhoneDetails> phoneDetails = phoneRepository.findOne(example);
+		Optional<MobileDetails> phoneDetails = phoneRepository.findOne(example);
 		if (!phoneDetails.isPresent()) {
 			return true;
 		}
